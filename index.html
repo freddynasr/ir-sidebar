@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+  <!-- BEGIN: Head-->
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta
+      name="description"
+      content="Modern admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities with bitcoin dashboard." />
+    <meta
+      name="keywords"
+      content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard" />
+    <meta name="author" content="PIXINVENT" />
+    <title>IR Guest Info</title>
+
+    <link
+      rel="apple-touch-icon"
+      href="./app-assets/images/ico/apple-icon-120.png" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="./app-assets/images/ico/favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700"
+      rel="stylesheet" />
+
+    <!-- BEGIN: Vendor CSS-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./app-assets/vendors/css/vendors.min.css" />
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./app-assets/css/bootstrap.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./app-assets/css/bootstrap-extended.css" />
+    <link rel="stylesheet" type="text/css" href="./app-assets/css/colors.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./app-assets/css/components.css" />
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./app-assets/css/core/menu/menu-types/horizontal-menu.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./app-assets/css/core/colors/palette-gradient.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./app-assets/css/pages/login-register.css" />
+    <!-- END: Page CSS-->
+
+    <script type="module" src="./training/training.esm.js"></script>
+    <style>
+      :root {
+        --sidebar-width: 50rem;
+      }
+      .slide {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        bottom: 0;
+        width: 30rem;
+        max-width: 100%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.5s;
+        z-index: 100;
+        overflow-y: hidden;
+      }
+      .slide.active {
+        right: 0;
+        overflow-y: scroll;
+      }
+
+      .close {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <ir-sidebar side="left">
+      <ir-guest-info></ir-guest-info>
+    </ir-sidebar>
+
+    <button onclick="fetchGuestInfo()" class="btn btn-success">
+      Fetch Guest Info
+    </button>
+    <button onclick="reset()" class="btn btn-warning">
+      Reset Data Fetched
+    </button>
+    <button onclick="showForm()" class="btn btn-primary">Show Form</button>
+
+    <script>
+      function showForm() {
+        const slide = document.querySelector("ir-sidebar");
+        slide.toggleSidebar();
+      }
+
+      function closeForm() {
+        const slide = document
+          .getElementsByClassName("slide")[0]
+          .classList.remove("active");
+      }
+
+      const Ticket =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTE3NjExNjEsIkNMQUlNLTAxIjoicktLMi9DY1dQQnM9IiwiQ0xBSU0tMDIiOiI5UStMQm93VTl6az0iLCJDTEFJTS0wMyI6Ilp3Tys5azJoTzUwPSIsIkNMQUlNLTA0IjoidEx1dmxrYUxwWkw3OUtaYWxDbTV1ZnVIMldJdXhtTDBLVk1wcUVLNW52RT0ifQ.m-Y7w3wF7n8MpFnAHT3W7x33wilLEINMkrSkWtDduCo";
+
+      function reset() {
+        const guestInfo = document.querySelector("ir-guest-info");
+        guestInfo.data = null;
+      }
+      function fetchGuestInfo() {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          BH_ID: 13509433,
+          LANGUAGE_ABBREVIATION: "EN",
+          EXCLUDE_AC: true,
+          EXCLUDE_BH_POLICIES: false,
+        });
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(
+          `https://gateway.igloorooms.com/IR/Get_Bh_Full?Ticket=${Ticket}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            let _data = {
+              firstName: result.My_Result.My_Guest.FIRST_NAME,
+              lastName: result.My_Result.My_Guest.LAST_NAME,
+              email: result.My_Result.My_Guest.My_User.EMAIL,
+              altEmail: result.My_Result.My_Guest.My_User.DISCLOSED_EMAIL,
+              password: result.My_Result.My_Guest.My_User.PASSWORD,
+              country: result.My_Result.My_Guest.COUNTRY_ID,
+              city: result.My_Result.My_Guest.CITY,
+              address: result.My_Result.My_Guest.ADDRESS,
+              mobile: result.My_Result.My_Guest.MOBILE,
+              prefix: result.My_Result.My_Guest.PHONE_PREFIX,
+              newsletter: result.My_Result.My_Guest.IS_NEWS_LETTER,
+              currency: result.My_Result.My_Guest.My_User.CURRENCY,
+              language: result.My_Result.My_Guest.My_User.LANGUAGE,
+            };
+            const guestInfo = document.querySelector("ir-guest-info");
+            guestInfo.data = _data;
+          })
+          .catch((error) => console.log("error", error));
+      }
+
+      document.addEventListener("submitForm", (e) => {
+        console.log("submitForm", e.detail);
+      });
+
+      document.addEventListener("getSetupData", (e) => {
+        fetchDataFromAPI();
+      });
+      function fetchDataFromAPI() {
+        try {
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          const raw = JSON.stringify({
+            language: "EN",
+          });
+          const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+          const response = fetch(
+            `https://gateway.igloorooms.com/IR/Get_Exposed_Countries?Ticket=${Ticket}`,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((result) => {
+              const guestInfo = document.querySelector("ir-guest-info");
+              guestInfo.setupDataCountries = result.My_Result.map((item) => {
+                return {
+                  value: item.id,
+                  text: item.name,
+                };
+              });
+              guestInfo.setupDataCountriesCode = result.My_Result.map(
+                (item) => {
+                  return {
+                    value: item.phone_prefix,
+                    text: item.phone_prefix,
+                  };
+                }
+              );
+            });
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          return null;
+        }
+      }
+    </script>
+    <!-- <script src="./app-assets/vendors/js/vendors.min.js"></script>
+
+    <script src="./app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="./app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
+    <script src="./app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+
+    <script src="./app-assets/js/core../app-menu.js"></script>
+    <script src="./app-assets/js/core/app.js"></script>
+
+    <script src="./app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
+    <script src="./app-assets/js/scripts/forms/form-login-register.js"></script> -->
+  </body>
+</html>
