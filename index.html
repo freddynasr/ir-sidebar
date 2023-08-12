@@ -66,41 +66,11 @@
       href="./app-assets/css/pages/login-register.css" />
     <!-- END: Page CSS-->
 
-    <script type="module" src="./training/training.esm.js"></script>
-    <style>
-      :root {
-        --sidebar-width: 50rem;
-      }
-      .slide {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        bottom: 0;
-        width: 30rem;
-        max-width: 100%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        transition: all 0.5s;
-        z-index: 100;
-        overflow-y: hidden;
-      }
-      .slide.active {
-        right: 0;
-        overflow-y: scroll;
-      }
-
-      .close {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        width: 1rem;
-        height: 1rem;
-        cursor: pointer;
-      }
-    </style>
+    <script type="module" src="./ir-webcmp/ir-webcmp.esm.js"></script>
   </head>
 
   <body>
-    <ir-sidebar side="left">
+    <!-- <ir-sidebar side="left">
       <ir-guest-info></ir-guest-info>
     </ir-sidebar>
 
@@ -223,7 +193,50 @@
           return null;
         }
       }
+    </script> -->
+
+    <ir-checkboxes></ir-checkboxes>
+
+    <script>
+      document.addEventListener("checkboxesChange", (e) => {
+        console.log("submitForm", e.detail);
+      });
+
+      const checkboxes = document.querySelector("ir-checkboxes");
+      checkboxes.checkboxes = [
+        {
+          name: "checkbox1",
+          text: "Checkbox 1",
+          checked: true,
+        },
+        {
+          name: "checkbox2",
+          text: "Checkbox 2",
+          checked: false,
+        },
+        {
+          name: "checkbox3",
+          text: "Checkbox 3",
+          checked: false,
+        },
+        {
+          name: "checkbox4",
+          text: "Checkbox 4",
+          checked: true,
+        },
+        {
+          name: "checkbox5",
+          text: "Checkbox 5",
+          checked: false,
+        },
+        {
+          name: "checkbox6",
+          text: "Checkbox 6",
+          checked: false,
+        },
+      ];
     </script>
+
     <!-- <script src="./app-assets/vendors/js/vendors.min.js"></script>
 
     <script src="./app-assets/vendors/js/ui/jquery.sticky.js"></script>
